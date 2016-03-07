@@ -1,0 +1,14 @@
+#ifndef IRUNNABLE_HH
+#define IRUNNABLE_HH
+
+#include <iostream>
+using namespace std;
+
+class IRunnable{
+  int dystans;
+public:
+  bool prepared(int size);
+
+};
+
+#endif
