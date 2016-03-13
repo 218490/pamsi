@@ -1,5 +1,0 @@
-#include "IRunnable.hh"
-
-void IRunnable::run(){
-
-}
