@@ -1,0 +1,10 @@
+#include "Lista.hh"
+
+/*!
+ *\file
+ *\brief Definicja metod interface'u abstrakcyjnego typu danych - Lista
+ */
+
+bool Dodaj(double elem,int index){
+  return true;
+}
