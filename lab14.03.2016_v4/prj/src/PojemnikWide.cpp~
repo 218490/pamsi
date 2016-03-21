@@ -1,0 +1,13 @@
+#include "PojemnikWide.hh"
+
+/*!
+ *\file
+ *\brief Pelni role pojedynczego elementu ADT (Lista)
+ */
+
+/*!
+ *
+ */
+//void PojemnikWide<typ>::zmienpole(typ pom){
+//  zmienna=pom;
+//}

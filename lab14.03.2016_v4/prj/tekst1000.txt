@@ -1,0 +1,149 @@
+Consider the bowling game from Chapter 6. For most of its development the Game class
+
+was handling two separate responsibilities. It was keeping track of the current frame, and
+
+it was calculating the score. In the end, RCM and RSK separated these two responsibilities
+
+into two classes. The Game kept the responsibility to keep track of frames, and the Scorer
+
+got the responsibility to calculate the score. (see page 83.)
+
+Why was it important to separate these two responsibilities into separate classes?
+
+Because each responsibility is an axis of change. When the requirements change, that
+
+change will be manifest through a change in responsibility amongst the classes. If a class
+
+assumes more than one responsibility, then there will be more than one reason for it to
+
+change.
+
+If a class has more than one responsibility, then the responsibilities become coupled.
+
+Changes to one responsibility may impair or inhibit the class’ ability to meet the others.
+
+This kind of coupling leads to fragile designs that break in unexpected ways when
+
+changed.
+
+For example, consider the design in Figure 8-1. The Rectangle class has two meth-
+ods shown. One draws the rectangle on the screen, the other computes the area of the rect-
+angle.
+Two different applications use the Rectangle class. One application does computa-
+tional geometry. It uses Rectangle to help it with the mathematics of geometric shapes.
+
+It never draws the rectangle on the screen. The other application is graphical in nature. It
+
+111 Chapter 8: SRP: The Single Responsibility Principle
+
+may also do some computational geometry, but it definitely draws the rectangle on the
+
+screen.
+
+This design violates the SRP. The Rectangle class has two responsibilities. The first
+
+responsibility is to provide a mathematical model of the geometry of a rectangle. The sec-
+ond responsibility is to render the rectangle on a graphical user interface.
+
+The violation of SRP causes several nasty problems. Firstly, we must include the GUI
+
+in the computational geometry application. In .NET the GUI assembly would have to be
+
+built and deployed with the computational geometry application.
+
+Secondly, if a change to the GraphicalApplication causes the Rectangle to
+
+change for some reason, that change may force us to rebuild, retest, and redeploy the
+
+ComputationalGeometryApplication. If we forget to do this, that application may
+
+break in unpredictable ways.
+
+A better design is to separate the two responsibilities into two completely different
+
+classes as shown in Figure 8-2. This design moves the computational portions of
+
+Rectangle into the GeometricRectangle class. Now changes made to the way rectan-
+gles are rendered cannot affect the ComputationalGeometryApplication.
+What is a Responsibility?
+
+In the context of the Single Responsibility Principle (SRP) we define a responsibility to be
+
+“a reason for change.” If you can think of more than one motive for changing a class, then
+
+that class has more than one responsibility. This is sometimes hard to see. We are accus-
+tomed to thinking of responsibility in groups. For example, consider the Modem interface
+
+in Listing 8-1. Most of us will agree that this interface looks perfectly reasonable. The four
+
+functions it declares are certainly functions belonging to a modem.
+However, there are two responsibilities being shown here. The first responsibility is
+
+connection management. The second is data communication. The dial and hangup func-
+tions manage the connection of the modem, while the send and recv functions communi-
+cate data.
+
+Should these two responsibilities be separated? That depends upon how the applica-
+tion is changing. If the application changes in ways that affect the signature of the connec-
+tion functions, then the design will smell of Rigidity because the classes that call send
+
+and read will have to be recompiled and redeployed more often than we like. In that case
+
+the two responsibilities should be separated as shown in Figure 8-3. This keeps the client
+
+applications from coupling the two responsibilities.
+If, on the other hand, the application is not changing in ways that cause the the two
+
+responsibilities to change at differen times, then there is no need to separate them. Indeed,
+
+separating them would smell of Needless Complexity.
+
+There is a corrolary here. An axis of change is only an axis of change if the changes
+
+actually occurr. It is not wise to apply the SRP, or any other principle for that matter, if
+
+there is no symptom.
+
+113 Chapter 8: SRP: The Single Responsibility Principle
+
+Separating coupled responsibilities.
+
+Notice that in Figure 8-3 I kept both responsibilities coulped in the ModemImplem-
+entation class. This is not desirable, but it may be necessary. There are often reasons,
+
+having to do with the details of the hardware or OS, that force us to couple things that
+
+we’d rather not couple. However, by separating their interfaces we have decoupled the
+
+concepts as far as the rest of the application is concerned.
+
+We may view the ModemImplementation class as a kludge, or a wart; however,
+
+notice that all dependencies flow away from it. Nobody need depend upon this class.
+
+Nobody except main needs to know that it exists. Thus, we’ve put the ugly bit behind a
+
+fence. It’s ugliness need not leak out and pollute the rest of the application.
+
+Persistence.
+
+Figure 8-4 shows a common violation of the SRP. The Employee class contains busi-
+ness rules and persistence control. These two responsibilities should almost never be
+
+mixed. Business rules tend to change frequently, and though persistence may not change
+
+as frequently, it changes for completely different reasons. Binding business rules to the
+
+persistence subsystem is asking for trouble.
+Fortunately, as we saw in Chapter 4, the practice of test driven development will usu-
+ally force these two responsibilities to be separated long before the design begins to smell.
+
+However, in cases where the tests did not force the separation, and the smells of Rigidity
+
+and Fragility become strong, the design should be refactored
+
+PROXY patterns to separate the two responsibilities.
+Conclusion
+
+The SRP is one of the simplest of the principles, and one of the hardest to get right. Con-
+PoniedzialekPAMSI
