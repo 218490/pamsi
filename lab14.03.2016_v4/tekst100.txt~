@@ -1,0 +1,14 @@
+Consider the bowling game from Chapter 6. For most of its development the Game class
+
+was handling two separate responsibilities. It was keeping track of the current frame, and
+
+it was calculating the score. In the end, RCM and RSK separated these two responsibilities
+
+into two classes. The Game kept the responsibility to keep track of frames, and the Scorer
+
+got the responsibility to calculate the score. 
+Why was it important to separate these two responsibilities into separate classes?
+
+Because each responsibility is an axis of change. When the requirements change, that
+
+change will be manifest through a change in 
