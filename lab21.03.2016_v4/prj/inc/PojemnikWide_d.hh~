@@ -1,0 +1,26 @@
+#ifndef POJEMNIKWIDE_D_HH
+#define POJEMNIKWIDE_D_HH
+
+#include <iostream>
+using namespace std;
+
+/*!
+ *\file
+ *\brief Pelni role pojedynczego elementu ADT (Lista_d)
+ *
+ *Rozni sie od "PojemnikWide" typem przechowywanej zmiennej-zmiana ze string na 
+ *double
+ */
+class PojemnikWide_d{
+  double zmienna;
+  int indeks=0;
+public:
+  PojemnikWide_d *wsk=NULL;
+
+  void Zmienpole(double pom){zmienna=pom;};
+  int& Wezindeks(){return indeks;};
+  double Wezzmienna(){return zmienna;};
+  PojemnikWide_d* Wskaznik(){return wsk;};
+};
+
+#endif

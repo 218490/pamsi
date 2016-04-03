@@ -1,0 +1,18 @@
+#include "IRunnable.hh"
+
+/*!
+ *\file
+ *\brief interfejs do testowania programow
+ */
+
+/*!
+ *\brief przygotowanie do testu przeszukiwania listy
+ *
+ *\param[in] pnazwapliku- nazwa pliku, zktorego ma byc wczytany tekst i 
+ *zapisany do listy
+ *\param[in] szukane- szukane slowo
+ */
+void IRunnable::przygotuj_szukajlista(string pnazwapliku, string pszukane){
+  nazwapliku=pnazwapliku;
+  szukane=pszukane;
+}
