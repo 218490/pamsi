@@ -1,0 +1,119 @@
+#include "QSort.hh"
+
+/*!
+ *\brief QuickSort na tablicy (pivot srodkowym elementem tablicy)
+ *
+ *\param[in] tablica-struktura przechowujaca tablice dynamiczna
+ *\param[in] lewy- lewa granica sortowania (numer indeksu)
+ *\param[in] prawy- prawa granica sortowania (numer indeksu)
+ */
+void QSort::Quicksort(Tab &tablica,int lewy,int prawy){
+  int pivot=tablica.tab[(lewy+prawy)/2];
+  int i,j,x;
+  i=lewy;
+  j=prawy;
+  do{
+    while(tablica.tab[i]<pivot) i++;
+    while(tablica.tab[j]>pivot) j--;
+    if(i<=j){
+      x=tablica.tab[i];
+      tablica.tab[i]=tablica.tab[j];
+      tablica.tab[j]=x;
+      i++; j--;
+    }
+  }while(i<=j);
+
+  if(j>lewy) Quicksort(tablica,lewy,j);
+  if(i<prawy) Quicksort(tablica,i,prawy);
+
+}
+
+/*!
+ *\brief QuickSort na tablicy (pivot pierwszym elementem tablicy)
+ *
+ *\param[in] tablica-struktura przechowujaca tablice dynamiczna
+ *\param[in] lewy- lewa granica sortowania (numer indeksu)
+ *\param[in] prawy- prawa granica sortowania (numer indeksu)
+ */
+void QSort::QuicksortLewy(Tab &tablica,int lewy,int prawy){
+  int pind=lewy;
+  int pivot=tablica.tab[pind];
+  int i,j,x;
+  i=lewy;
+  j=prawy;
+  while(i<=j){
+    while(tablica.tab[j]>pivot) j--;
+    if(1){
+      x=tablica.tab[j];
+      tablica.tab[j]=tablica.tab[pind];
+      tablica.tab[pind]=x;
+      pind=j;
+      j--;
+    }
+    
+    while(tablica.tab[i]<pivot) i++;
+
+      x=tablica.tab[i];
+      tablica.tab[i]=tablica.tab[pind];
+      tablica.tab[pind]=x;
+      pind=i;
+      i++;
+    
+  }
+
+  if(j>lewy) QuicksortLewy(tablica,lewy,j);
+  if(i<prawy) QuicksortLewy(tablica,i,prawy);
+
+}
+
+/*!
+ *Znajduje maksymalna wartosc w tablicy i zwraca indeks
+ */
+int QSort::Maksimum(Tab tablica,int lewy,int prawy){
+  int szukane=lewy;
+  int max=tablica.tab[lewy];
+  for(int i=lewy;i<=prawy;i++){
+    if(tablica.tab[i]>max) szukane=i;
+  }
+  return szukane;
+}
+
+/*!
+ *\brief QuickSort na tablicy (przypadek pesymistyczny)
+ *
+ *elementem rozdzielającym za każdym razem okazuje się element podtablicy T o
+ *skrajnej wartości (maksymalnej lub minimalnej).
+ *
+ *\param[in] tablica-struktura przechowujaca tablice dynamiczna
+ *\param[in] lewy- lewa granica sortowania (numer indeksu)
+ *\param[in] prawy- prawa granica sortowania (numer indeksu)
+ */
+void QSort::QuicksortPesym(Tab &tablica,int lewy,int prawy){
+  int pind=lewy;//Maksimum(tablica,lewy,prawy);
+  int pivot=tablica.tab[pind];
+  int i,j,x;
+  i=lewy;
+  j=prawy;
+  do{
+    while(tablica.tab[j]>pivot) j--;
+    if(i<=j){
+      x=tablica.tab[j];
+      tablica.tab[j]=tablica.tab[pind];
+      tablica.tab[pind]=x;
+      pind=j;
+      j--;
+    }
+    while(tablica.tab[i]<pivot) i++;
+    if(i<=j){
+      x=tablica.tab[i];
+      tablica.tab[i]=tablica.tab[pind];
+      tablica.tab[pind]=x;
+      pind=i;
+      i++;
+    }
+  }while(i<=j);
+
+  if(j>lewy) QuicksortPesym(tablica,lewy,j);
+  if(i<prawy) QuicksortPesym(tablica,i,prawy);
+
+}
