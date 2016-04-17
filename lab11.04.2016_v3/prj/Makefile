@@ -1,0 +1,43 @@
+#
+#  To sa opcje dla kompilacji
+#
+CXXFLAGS=-g -Iinc -Wall -pedantic -std=c++11
+
+__start__: TablicaAsocjacyjna
+	./TablicaAsocjacyjna
+
+TablicaAsocjacyjna: obj obj/main.o obj/Stoper.o obj/PojemnikWide.o obj/Lista.o obj/Rekord.o obj/TablicaHash.o obj/TablicaAsoc.o obj/TablicaAsocTest.o obj/IRunnable.o
+	g++ -Wall -pedantic -std=c++0x -o TablicaAsocjacyjna obj/main.o obj/Stoper.o obj/PojemnikWide.o obj/Lista.o obj/Rekord.o obj/TablicaHash.o obj/TablicaAsoc.o obj/TablicaAsocTest.o obj/IRunnable.o
+
+obj:
+	mkdir obj
+
+obj/main.o: src/main.cpp
+	g++ -c ${CXXFLAGS} -o obj/main.o src/main.cpp
+
+obj/Stoper.o: inc/Stoper.hh src/Stoper.cpp
+	g++ -c ${CXXFLAGS} -o obj/Stoper.o src/Stoper.cpp
+
+obj/PojemnikWide.o: inc/PojemnikWide.hh src/PojemnikWide.cpp
+	g++ -c ${CXXFLAGS} -o obj/PojemnikWide.o src/PojemnikWide.cpp
+
+obj/Lista.o: inc/Lista.hh src/Lista.cpp
+	g++ -c ${CXXFLAGS} -o obj/Lista.o src/Lista.cpp
+
+obj/Rekord.o: inc/Rekord.hh src/Rekord.cpp
+	g++ -c ${CXXFLAGS} -o obj/Rekord.o src/Rekord.cpp
+
+obj/TablicaHash.o: inc/TablicaHash.hh src/TablicaHash.cpp
+	g++ -c ${CXXFLAGS} -o obj/TablicaHash.o src/TablicaHash.cpp
+
+obj/TablicaAsoc.o: inc/TablicaAsoc.hh src/TablicaAsoc.cpp
+	g++ -c ${CXXFLAGS} -o obj/TablicaAsoc.o src/TablicaAsoc.cpp
+
+obj/TablicaAsocTest.o: inc/TablicaAsocTest.hh src/TablicaAsocTest.cpp
+	g++ -c ${CXXFLAGS} -o obj/TablicaAsocTest.o src/TablicaAsocTest.cpp
+
+obj/IRunnable.o: inc/IRunnable.hh src/IRunnable.cpp
+	g++ -c ${CXXFLAGS} -o obj/IRunnable.o src/IRunnable.cpp
+
+clean:
+	rm -f obj/*.o tablica_dyn
