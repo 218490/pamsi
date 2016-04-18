@@ -1,0 +1,84 @@
+#include "Tablica.hh"
+
+/*!
+ *
+ */
+void Tablica::Dodaj(int element, int indeks){
+  if( indeks>=rozmiar ){
+    int *tabpom=NULL;
+    tabpom=new int[rozmiar];
+    for(int i=0;i<rozmiar;i++)
+      tabpom[i]=tablica[i];
+
+    delete []tablica;
+    potega++;
+    rozmiar=pow(2,potega);
+    tablica=new int[rozmiar];
+
+    for(int i=0;i<pow(2, (potega-1) );i++)
+      tablica[i]=tabpom[i];
+    delete []tabpom;
+
+    tablica[indeks]=element;
+  }
+
+}
+
+/*!
+ *Funkcja rozni sie od "dodaj_liczby" sposobem zmieniania rozmiaru tablicy.
+ *W przypadku zapelnienia tablicy dynamicznej, funkcja alokuje nowa, dwa razy 
+ *wieksza
+ *
+ */
+void tabdyn::dodaj_liczby_dwa(int pom){
+  if(licznik>0){
+    tablica[rozmiar-licznik]=pom;
+    licznik--;
+}
+  else{
+    int *tabpom=NULL;
+    tabpom=new int[rozmiar];
+    for(int i=0;i<rozmiar;i++){
+      tabpom[i]=tablica[i];
+    }
+    usun();
+    tablica=new int[2*rozmiar];
+    for(int i=0;i<rozmiar;i++){
+      tablica[i]=tabpom[i];
+    }
+    delete []tabpom;
+    licznik=rozmiar;
+    rozmiar=2*rozmiar;
+    tablica[rozmiar-licznik]=pom;
+    licznik--;
+  }
+}
+
+
+/*!
+ *Gdy zabraknie miejsca w tablicy na nowy element, funkcja zwieksza ja o 10
+ *(elementow typu int)
+ */
+void tabdyn::dodaj_liczby_dek(int pom){
+  if(licznik>0){
+    tablica[rozmiar-licznik]=pom;
+    licznik--;
+}
+  else{
+    int *tabpom=NULL;
+    tabpom=new int[rozmiar];
+    for(int i=0;i<rozmiar;i++){
+      tabpom[i]=tablica[i];
+    }
+    usun();
+    tablica=new int[rozmiar+10];
+    for(int i=0;i<rozmiar;i++){
+      tablica[i]=tabpom[i];
+    }
+    delete []tabpom;
+    licznik=10;
+    rozmiar=rozmiar+10;
+    tablica[rozmiar-licznik]=pom;
+    licznik--;
+  }
+}

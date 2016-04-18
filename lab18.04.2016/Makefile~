@@ -1,0 +1,22 @@
+#
+#  To sa opcje dla kompilacji
+#
+CXXFLAGS=-g -Iinc -Wall -pedantic -std=c++11
+
+__start__: Drzewo
+	./Drzewo
+
+Drzewo: obj obj/main.o obj/Stoper.o 
+	g++ -Wall -pedantic -std=c++0x -o Drzewo obj/main.o obj/Stoper.o 
+
+obj:
+	mkdir obj
+
+obj/main.o: src/main.cpp
+	g++ -c ${CXXFLAGS} -o obj/main.o src/main.cpp
+
+obj/Stoper.o: inc/Stoper.hh src/Stoper.cpp
+	g++ -c ${CXXFLAGS} -o obj/Stoper.o src/Stoper.cpp
+
+clean:
+	rm -f obj/*.o tablica_dyn
