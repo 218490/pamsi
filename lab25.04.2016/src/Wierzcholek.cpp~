@@ -1,0 +1,5 @@
+#include "Wierzcholek.hh"
+
+void Wierzcholek::DodajKrawedz(Krawedz k){
+  krawedzie.Dodaj(k,0);
+}

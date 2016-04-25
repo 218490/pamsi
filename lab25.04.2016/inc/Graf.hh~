@@ -1,0 +1,15 @@
+#ifndef GRAF_HH
+#define GRAF_HH
+
+#include <iostream>
+using namespace std;
+
+class Graf{
+
+
+public:
+
+};
+
+
+#endif
