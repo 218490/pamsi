@@ -1,0 +1,379 @@
+#include "Drzewo.hh"
+
+/*!
+ *Dodawanie elementu tak jak dla zwyklego drzewa binarnego. Jest to metoda
+ *pomocnicza dla wlasciwej metody dodawania elementu do drzewa czerwono-czarnego
+ *
+ *\param[in] element- element do przechowania w drzewie
+ *
+ *\retval true- jesli element zostal poprawnie dodany do drzewa
+ */
+Pojemnik* Drzewo::DodajBezBalansu(int element){
+  if(head==NULL){
+    head=new Pojemnik;
+    head->WezKolor()="B";
+    head->WezWartosc()=element;
+    return head;
+  }
+  Pojemnik *pom;
+  pom=head;
+
+  while(1){
+    if(pom->WezWartosc()>=element){
+      if(pom->Lewy()==NULL){
+	pom->lewy=new Pojemnik;
+	Pojemnik *pom2;
+	pom2=pom->Lewy();
+	pom2->ojciec=pom;
+	pom2->WezWartosc()=element;
+	pom2=NULL;
+	return pom->Lewy();
+      }
+      else
+	pom=pom->Lewy();
+    }
+    else{
+      if(pom->Prawy()==NULL){
+	pom->prawy=new Pojemnik;
+	Pojemnik *pom2;
+	pom2=pom->Prawy();
+	pom2->ojciec=pom;
+	pom2->WezWartosc()=element;
+	pom2=NULL;
+	return pom->Prawy();
+      }
+      else
+	pom=pom->Prawy();
+    }
+  }
+
+  return pom;
+}
+
+/*!
+ *Lewa rotacja wzgledem wezla podanego jako parametr metody
+ *
+ *\param[in] X- wzgledem tego wezla nastepuje rotacja
+ */
+void Drzewo::LewaRotacja(Pojemnik *X){
+  Pojemnik *Y;
+  Pojemnik *pom;
+  Y=X->Prawy();
+
+  Y->ojciec=X->Ojciec();
+  //
+  if(Y->Ojciec()==NULL)
+    head=Y;
+  else{
+    pom=X->Ojciec();
+    if(JakiJestem(X)=="P")
+      pom->prawy=Y;
+    else
+      pom->lewy=Y;
+    pom=NULL;
+  }
+  //
+  X->ojciec=Y;
+  //przerzucanie galezi
+  pom=Y->Lewy();
+  if(pom!=NULL){
+    pom->ojciec=X;
+    pom=NULL;
+  }
+  X->prawy=Y->Lewy();
+  //
+  Y->lewy=X;
+
+  Y=NULL;
+}
+
+/*!
+ *Prawa rotacja wzgledem wezla podanego jako parametr metody
+ *
+ *\param[in] X- wzgledem tego wezla nastepuje rotacja
+ */
+void Drzewo::PrawaRotacja(Pojemnik *X){
+  Pojemnik *Y;
+  Pojemnik *pom;
+  Y=X->Lewy();
+
+  Y->ojciec=X->Ojciec();
+  //
+  if(Y->Ojciec()==NULL)
+    head=Y;
+  else{
+    pom=X->Ojciec();
+    if(JakiJestem(X)=="P")
+      pom->prawy=Y;
+    else
+      pom->lewy=Y;
+    pom=NULL;
+  }
+  //
+  X->ojciec=Y;
+  //przerzucanie galezi
+  pom=Y->Prawy();
+  if(pom!=NULL){
+    pom->ojciec=X;
+    pom=NULL;
+  }
+  X->lewy=Y->Prawy();
+  //
+  Y->prawy=X;
+
+  Y=NULL;
+}
+
+/*!
+ *Sprawdza czy podany jako parametr wezel jest lewym czy prawym synem swego ojca
+ */
+string Drzewo::JakiJestem(Pojemnik *wezel){
+  if(wezel==NULL){return "Nijaki";};
+  if(wezel->Ojciec()==NULL){return "K";} //korzen
+  if( (wezel->Ojciec())->Lewy()==wezel )
+    return "L";
+  else
+    return "P";
+}
+
+/*!
+*Daje nam dostep do stryja wezla podanego jako parametr
+*/
+Pojemnik* Drzewo::Stryj(Pojemnik* Z){
+  Pojemnik *pom;
+  pom=Z->Ojciec();
+  if(pom==NULL)
+    return NULL;
+  pom=pom->Ojciec();
+  if( JakiJestem(Z->Ojciec())=="P" )
+    return pom->Lewy();
+  else
+    return pom->Prawy();
+}
+
+/*!
+ *Daje nam dostep do dziadka wezla podanego jako parametr
+ */
+Pojemnik* Drzewo::Dziadek(Pojemnik* Z){
+   Pojemnik *pom;
+   pom=Z->Ojciec();
+   return pom=pom->Ojciec();
+}
+
+/*!
+ *Funkcja pomocnicza do testowania algorytmu
+ */
+void Drzewo::Proba(){
+  /*
+  Dodaj(18);
+  Dodaj(97);
+  Dodaj(69);
+  Dodaj(68);
+  Dodaj(30);
+  Dodaj(55);
+  Dodaj(67);
+  Dodaj(81);
+  Dodaj(28);
+  Dodaj(40);
+  
+  Wyswietl();
+  */
+  srand(time(NULL));
+  int pom;
+
+  for(int i=0;i<100;i++){
+    pom=rand()%100+1;
+    cout<<"-----------------------------"<<endl;
+    cout<<"     "<<pom<<endl;
+    cout<<"-----------------------------"<<endl;
+    Dodaj(pom);
+    //Wyswietl();
+  }
+  
+  //Wyswietl();
+}
+
+/*!
+ *Dodawanie elementu do drzewa czerwono-czarnego z zachowaniem balansu drzewa
+ *
+ *\param[in] element- element jaki ma byc przechowywany w drzewie
+ *
+ *\retval true jesli operacja dodawania powiodla sie
+ */
+bool Drzewo::Dodaj(int element){
+  Pojemnik *Z;
+  Z=DodajBezBalansu(element);
+  /*  if(Z->Ojciec()==head) //2 i 3 element drzewa czyli dwaj pierwsi synowie na
+      Z->WezKolor()="B";*/                                          //czarno
+
+  if(Z==head)
+    return true;
+
+  while( (Z->Ojciec())->WezKolor()=="R" ){
+    //  	  cout<<"Wszedlem"<<endl;
+    if( JakiJestem(Z->Ojciec())=="P" ){
+      if(Stryj(Z)!=NULL){  //stryj istnieje
+	if(Stryj(Z)->WezKolor()=="R"){  //stryj czerwony
+	  (Z->Ojciec())->WezKolor()="B";                     
+	  Stryj(Z)->WezKolor()="B";
+	  Z=Dziadek(Z);
+	  Z->WezKolor()="R";
+	  // cout<<"Zrobilem 1"<<endl;
+	}
+	else if(/*Stryj(Z)->WezKolor()=="B" &&*/ JakiJestem(Z)=="L" ){  
+          Z=Z->Ojciec();                   //stryj czarny i wezel lewym synem
+	  PrawaRotacja(Z);
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  LewaRotacja(Dziadek(Z));
+	  // cout<<"Zrobilem 2"<<endl;
+	}
+	else if(/*Stryj(Z)->WezKolor()=="B" &&*/ JakiJestem(Z)=="P"){
+	  (Z->Ojciec())->WezKolor()="B";  //stryj czarny i wezel prawym synem
+	  Dziadek(Z)->WezKolor()="R";
+	  LewaRotacja(Dziadek(Z));
+	  // cout<<"Zrobilem 3"<<endl;
+	  }
+      }
+      else/*(Stryj(Z)==NULL)*/{  //Stryj nie istnieje
+	if(JakiJestem(Z)=="L"){ 
+          Z=Z->Ojciec();                   // wezel lewym synem
+	  PrawaRotacja(Z);
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  LewaRotacja(Dziadek(Z));
+	  // cout<<"Zrobilem 4"<<endl;
+	}
+	else if(JakiJestem(Z)=="P"){
+	  (Z->Ojciec())->WezKolor()="B";  // wezel prawym synem
+	  Dziadek(Z)->WezKolor()="R";
+	  LewaRotacja(Dziadek(Z));
+	  // cout<<"Zrobilem 5"<<endl;
+	}
+      }
+    }
+    else if(JakiJestem(Z->Ojciec())=="L"){ //glowny if
+      if(Stryj(Z)!=NULL){
+	if(Stryj(Z)->WezKolor()=="R"){
+	  (Z->Ojciec())->WezKolor()="B";                     
+	  Stryj(Z)->WezKolor()="B";
+	  Z=Dziadek(Z);
+	  Z->WezKolor()="R";
+    	  //cout<<"Zrobilem 6"<<endl;
+	}
+	else if(/*Stryj(Z)->WezKolor()=="B" &&*/ JakiJestem(Z)=="P"){
+	  Z=Z->Ojciec();
+	  LewaRotacja(Z);
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  PrawaRotacja(Dziadek(Z));
+    	  //cout<<"Zrobilem 7"<<endl;
+	}
+	else if(/*Stryj(Z)->WezKolor()=="B" &&*/ JakiJestem(Z)=="L"){
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  PrawaRotacja(Dziadek(Z));
+    	  //cout<<"Zrobilem 8"<<endl;
+	}
+      }
+      else/*(Stryj(Z)==NULL)*/{
+	if(JakiJestem(Z)=="P"){
+	  Z=Z->Ojciec();
+	  LewaRotacja(Z);
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  PrawaRotacja(Dziadek(Z));
+    	  //cout<<"Zrobilem 9"<<endl;
+	}
+	else if(JakiJestem(Z)=="L"){
+	  (Z->Ojciec())->WezKolor()="B";
+	  Dziadek(Z)->WezKolor()="R";
+	  PrawaRotacja(Dziadek(Z));
+    	  //cout<<"Zrobilem 10"<<endl;
+	}
+      }
+    }
+    
+      if(Z->Ojciec()==NULL){
+	//cout<<"serio???"<<endl;
+	head->WezKolor()="B"; 
+	Z=NULL;
+	return true;
+	} 
+  }
+
+  head->WezKolor()="B";
+  Z=NULL;
+  return true;
+}
+
+/*!
+ *Usuwa Wszystkie elementy z drzewa jesli w metodzie wywolamy Usun(head);
+ */
+void Drzewo::Usun(Pojemnik *pom){
+  if(pom==NULL){cerr<<"W drzewie nie ma elementow"<<endl; return;}  
+  if(pom->Lewy()!=NULL){
+    //cout<<"lewy"<<endl;
+    Usun(pom->Lewy());
+  }
+  if(pom->Prawy()!=NULL){
+    //cout<<"prawy"<<endl;
+    Usun(pom->Prawy());
+  }
+  if(pom->Prawy()==NULL && pom->Lewy()==NULL){
+    string pozycja=JakiJestem(pom);
+    Pojemnik *pom2;
+    pom2=pom->ojciec;
+    delete pom;
+    pom=NULL;
+    cout<<"Usunieto"<<endl;
+
+    if(pozycja=="L")
+      pom2->lewy=NULL;
+    else if(pozycja=="P")
+      pom2->prawy=NULL;
+    else{
+      cout<<"Mam korzen, KONIEC"<<endl;
+      return;
+    }
+  }
+
+}
+
+/*!
+ *\brief
+ *Funkcja pomocnicza do sledzenia stanu drzewa
+ *
+ *Funkcja wypisujaca na standardowe wyjscie wszystkie wezly drzewa, informacje
+ *kto jest ich ojcem i informacje na temat przeplywu wywolan funkcji, a 
+ *zarazem ksztaltu drzewa np. info, ze jest wezel "2", info o ojcu "2", a
+ *pozniej info gdzie poszedlem z tego wezla "2" (poszedlem w prawo czyli wiemy
+ *, ze zaraz bedziemy widziec prawego syna wezla "2") 
+ */
+void Drzewo::Wyswietl(Pojemnik *start,string strona){
+  if(start==NULL){
+    start=head;
+  }
+  Pojemnik *pom1=start;
+  Pojemnik *pom2=start;
+
+  if(pom1!=NULL){
+    cout<<endl<<"Poszedlem w "<<strona<<endl;
+    cout<<"Wartosc wezla to:"<<pom1->WezWartosc()<<endl;
+    cout<<"Kolor wezla to:"<<pom1->WezKolor()<<endl;
+    if(pom1->Ojciec()!=NULL){
+      cout<<"Moim ojcem jest:"<<(pom1->ojciec)->WezWartosc()<<endl;
+    }
+  
+  if(pom2->Prawy()!=NULL){
+    pom2=pom2->Prawy();
+    Wyswietl(pom2,"Prawo");
+  }
+  if(pom1->Lewy()!=NULL){
+    pom1=pom1->Lewy();
+    Wyswietl(pom1,"Lewo");
+  }
+
+  }
+
+}

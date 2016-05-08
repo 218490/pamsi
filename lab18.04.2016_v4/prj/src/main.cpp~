@@ -1,0 +1,12 @@
+#include <iostream>
+#include "DrzewoTest.hh"
+
+using namespace std;
+
+
+int main(){
+  Drzewo dab;
+
+  //dab.Proba();
+
+}

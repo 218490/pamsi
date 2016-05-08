@@ -1,0 +1,24 @@
+#ifndef POJEMNIK_HH
+#define POJEMNIK_HH
+
+#include <iostream>
+using namespace std;
+
+/*!
+ *\file
+ *
+ *\brief
+ *Implementacja pojedynczego elementu drzewa
+ */
+
+ class Pojemnik{
+   int wartosc=0;
+   string kolor="N";  //N-nothing
+
+ public:
+   int& WezWartosc(){return wartosc;};
+   string& WezKolor(){return kolor;};
+
+ };
+
+#endif
