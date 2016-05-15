@@ -1,0 +1,29 @@
+#include "DFS.hh"
+
+int DFS(Graf& graf){
+  Stos stos;
+  Stos odwiedzone;
+  int indeks=-1;
+  int pom=-1;
+  while(indeks==-1){
+    pom++;
+    indeks=graf.WyszukajW(pom);
+  }
+  odwiedzone.Dodaj(pom);
+  graf.WezW(indeks).Flaga();
+  graf.WezW(indeks).ZapiszSasiadow(stos);
+
+  while(!stos.Czypusty()){
+    pom=stos.Usun();
+    indeks=graf.WyszukajW(pom);
+    if(graf.WezW(indeks).CzyOdwiedzony()){}
+    else{
+      odwiedzone.Dodaj(pom);
+      graf.WezW(indeks).Flaga();
+      graf.WezW(indeks).ZapiszSasiadow(stos);
+    }
+
+  }
+
+  return odwiedzone.Rozmiar();
+}

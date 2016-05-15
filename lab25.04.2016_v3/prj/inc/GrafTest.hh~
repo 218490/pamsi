@@ -1,0 +1,31 @@
+#ifndef GRAFTEST_HH
+#define GRAFTEST_HH
+
+#include <iostream>
+#include <cstring>
+#include "Graf.hh"
+#include "DFS.hh"
+#include "BFS.hh"
+#include "Stoper.hh"
+using namespace std;
+
+/*!
+ *\file
+ *\brief Implementacja klasy odpowiedzialnej za testowanie algorytmow DFS i BFS
+ *na grafie
+ */
+
+class GrafTest: public IRunnable{
+Kolejka wytyczne;
+
+public:
+bool Przygotuj(string nazwapliku);
+void TestujDFS();
+void TestujBFS();
+
+
+};
+
+bool otworz_plik_odczyt(string nazwapom, fstream& StrmPlikowy);
+
+#endif

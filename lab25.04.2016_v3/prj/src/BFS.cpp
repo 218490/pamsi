@@ -1,0 +1,26 @@
+#include "BFS.hh"
+
+int BFS(Graf& graf){
+  Kolejka kolejka;
+  Stos odwiedzone;
+  int indeks=-1;
+  int pom=-1;
+  while(indeks==-1){
+    pom++;
+    indeks=graf.WyszukajW(pom);
+  }
+  odwiedzone.Dodaj(pom);
+  graf.WezW(indeks).ZapiszSasiadow(kolejka);
+
+  while(!kolejka.Czypusta()){
+    pom=kolejka.Usun();
+    if(odwiedzone.Wyszukaj(pom)){}
+    else{
+      indeks=graf.WyszukajW(pom);
+      odwiedzone.Dodaj(pom);
+      graf.WezW(indeks).ZapiszSasiadow(kolejka);
+    }
+  }
+
+  return odwiedzone.Rozmiar();
+}
