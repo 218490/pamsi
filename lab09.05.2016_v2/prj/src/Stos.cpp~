@@ -1,0 +1,118 @@
+#include "Stos.hh"
+
+/*!
+ *\file
+ *\brief Definicja metod interface'u ADT- Stos
+ */
+
+/*!
+ *"Kladzie" element na Stos
+ *
+ *\param[in] elem- zmienna do przechowania
+ */
+void Stos::Dodaj(Krawedz elem){
+  if(Czypusty()){
+    head=new Pojemnik;
+    head->Zmienpole(elem);
+    rozmiar++;
+  }
+  else{
+    Pojemnik *pom;
+    pom= new Pojemnik;
+    pom->Zmienpole(elem);
+    pom->wsk=head;
+    head=pom;
+    pom=NULL;
+    rozmiar++;
+  }
+}
+
+/*!
+ *Usuwa element ze stosu
+ *
+ *\retval wartosc usunietego elementu
+ */
+Krawedz Stos::Usun(){
+  Krawedz wartosc;
+  if(Czypusty()){
+    cerr<<"Stos pusty, nie ma co usuwac. Zwracam przypadkowa zmienna"<<endl;
+  }
+  else{
+    Pojemnik *pom;
+    pom=head;
+    head=head->Wskaznik();
+    wartosc=pom->Wezzmienna();
+    delete pom;
+    pom=NULL;
+    rozmiar--;
+  }
+  return wartosc;
+}
+
+/*!
+ *Zwraca wartosc elementu stosu, ktory jest "na wierzchu". Funkcja NIE sluzy do 
+ *modyfikowania wartosci tego elementu
+ *
+ */
+Krawedz Stos::Wez(){
+  Krawedz wartosc;
+  if(Czypusty()){
+    cerr<<"Stos pusty. Zwracam przypadkowa zmienna"<<endl;
+  }
+  else{
+    wartosc=head->Wezzmienna();
+  }
+  return wartosc;
+}
+
+/*!
+ *Usuwa wszystkie elementy stosu
+ */
+void Stos::Oproznij(){
+  if(!Czypusty()){
+    for(int i=0;i<Rozmiar();i++){
+      Usun();
+    }
+  }
+}
+
+/*!
+ *Wyswietla wszystkie elementy stosu od "wierzcholka" do dolu
+ */
+void Stos::Wyswietl(){
+  if(Czypusty()){
+    cerr<<"Stos pusty. Nie ma czego wyswietlac"<<endl;
+  }
+  else{
+    Pojemnik *pom;
+    pom=head;
+    cout<<pom->Wezzmienna()->WezSasiad()<<endl;
+    while(pom->Wskaznik()!=NULL){
+      pom=pom->Wskaznik();
+      cout<<pom->Wezzmienna()->WezSasiad()<<endl;
+    }
+    pom=NULL;
+  }
+}
+
+/*//
+ *Metoda sprawdzajaca czy dany element jest przechowywany w stosie
+ *
+ *\param[in] szukane element, ktorego obecnosc w stosie jest sprawdzana
+ *
+ *\retval true jesli szukany element jest w stosie
+ *\retval false jesli stos nie przechowuje szukanego elementu
+ *//*
+bool Stos::Wyszukaj(int szukane){
+  Pojemnik *pom;
+  pom=head;
+
+  while(pom!=NULL){
+    if(pom->Wezzmienna()==szukane)
+      return true;
+    pom=pom->Wskaznik();
+  }
+
+  return false;
+}
+   */
