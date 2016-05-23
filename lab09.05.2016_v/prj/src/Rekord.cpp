@@ -1,0 +1,20 @@
+#include "Rekord.hh"
+
+/*!
+ *Przeciazenie operatora porownania dla dwoch obiektow typu "Rekord".
+ *Funkcja potrzebna do wyszukiwania rekordu w tablicy haszujacej
+ */
+bool operator==(Rekord istniejace,Rekord szukane){
+  if(istniejace.WezKlucz()==szukane.WezKlucz())
+    return true;
+  else
+    return false;
+}
+
+/*!
+ *\brief Wyswietlanie rekordow
+ */
+ostream& operator<<(ostream& strm,Rekord rek){
+  strm<<"["<<rek.WezKlucz()<<"  "<<rek.WezNumer()<<"]";
+  return strm;
+}

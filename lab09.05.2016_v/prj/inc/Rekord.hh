@@ -1,0 +1,26 @@
+#ifndef REKORD_HH
+#define REKORD_HH
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+/*!
+ *\file
+ *\brief Implementacja pojedynczego rekordu "Ksiazki telefonicznej" (Tablica
+ *asocjacyjna)
+ */
+class Rekord{
+  string klucz;
+  int numer=0;
+public:
+  Rekord(){};
+  Rekord(string pklucz){klucz=pklucz;};
+  Rekord(string pklucz,int pnumer){klucz=pklucz; numer=pnumer;};
+  string& WezKlucz(){return klucz;};
+  int& WezNumer(){return numer;};
+};
+bool operator==(Rekord istniejace,Rekord szukane);
+ostream& operator<<(ostream& strm,Rekord rek);
+
+#endif
